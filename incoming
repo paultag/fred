@@ -1,1 +1,30 @@
 #!/usr/bin/env python
+
+from debian.deb822 import Changes
+from email.parser import Parser
+import subprocess
+import json
+import sys
+import re
+import os
+from pymongo import Connection
+
+connection = Connection('localhost', 27017)
+db = connection.fred
+
+
+p = Parser()
+email = p.parse(sys.stdin)
+
+content = email.get_payload()
+
+changes = Changes(content)
+source, version, dist = (changes[x] for x in (
+    'Source', 'Version', 'Distribution'))
+
+
+db.builds.insert({
+    "source": source,
+    "version": version,
+    "dist": dist
+}, safe=True)
