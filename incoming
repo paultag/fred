@@ -7,10 +7,8 @@ import json
 import sys
 import re
 import os
-from pymongo import Connection
 
-connection = Connection('localhost', 27017)
-db = connection.fred
+from fred import db
 
 
 p = Parser()
@@ -24,6 +22,7 @@ source, version, dist = (changes[x] for x in (
 
 
 db.builds.insert({
+    "_id": "%s/%s" % (source, version),  # prevent dupes
     "source": source,
     "version": version,
     "dist": dist

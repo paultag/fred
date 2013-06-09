@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+from ricky.utils import fetch_and_upload
+from fred import db
+
+
+for build in db.builds.find():
+    try:
+        fetch_and_upload(
+            source=build['source'],
+            version=build['version'],
+            dist=build['dist']
+        )
+        db.builds.remove({"_id": build['_id']}, safe=True)
+    except Exception:
+        pass
