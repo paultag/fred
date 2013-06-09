@@ -21,6 +21,10 @@ source, version, dist = (changes[x] for x in (
     'Source', 'Version', 'Distribution'))
 
 
+if not source.startswith("python-"):
+    sys.exit(0)
+
+
 db.builds.insert({
     "_id": "%s/%s" % (source, version),  # prevent dupes
     "source": source,

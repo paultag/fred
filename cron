@@ -15,4 +15,3 @@ for build in db.builds.find():
         db.builds.remove({"_id": build['_id']}, safe=True)
     except Exception as e:
         print(e)
-        raise
