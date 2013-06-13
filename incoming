@@ -17,11 +17,12 @@ email = p.parse(sys.stdin)
 content = email.get_payload()
 
 changes = Changes(content)
-source, version, dist = (changes[x] for x in (
-    'Source', 'Version', 'Distribution'))
+maintainer, source, version, dist = (changes[x] for x in (
+    'Maintainer', 'Source', 'Version', 'Distribution'))
 
 
-if not source.startswith("python-"):
+maintainer = maintainer.lower()
+if "python" not in maintainer and "javascript" not in maintainer:
     sys.exit(0)
 
 

@@ -2,17 +2,20 @@
 
 from ricky.utils import fetch_and_upload
 from fred import db
+import ricky
 
 
-for build in db.builds.find():
-    try:
-        print(build['_id'])
-        fetch_and_upload(
-            source=build['source'],
-            version=build['version'],
-            dist=build['dist'],
-            **{"X-Lucy-Group": "auto-rebuild"}
-        )
-        db.builds.remove({"_id": build['_id']}, safe=True)
-    except Exception as e:
-        print(e)
+for mirror in ["incoming.debian.org", "debian.lcs.mit.edu"]:
+    ricky.DEFAULT_MIRROR = mirror
+    for build in db.builds.find():
+        try:
+            print(build['_id'])
+            fetch_and_upload(
+                source=build['source'],
+                version=build['version'],
+                dist=build['dist'],
+                **{"X-Lucy-Group": "auto-rebuild"}
+            )
+            db.builds.remove({"_id": build['_id']}, safe=True)
+        except Exception as e:
+            print(e)
