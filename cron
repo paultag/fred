@@ -14,7 +14,7 @@ for mirror in ["incoming.debian.org", "debian.lcs.mit.edu"]:
                 source=build['source'],
                 version=build['version'],
                 dist=build['dist'],
-                **{"X-Lucy-Group": "auto-rebuild"}
+                **{"X-Debile-Group": "auto-rebuild"}
             )
             db.builds.remove({"_id": build['_id']}, safe=True)
         except Exception as e:
